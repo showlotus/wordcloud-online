@@ -14,6 +14,12 @@ dependencies:
   clsx:
     specifier: ^2.1.0
     version: 2.1.0
+  echarts:
+    specifier: ^5.4.3
+    version: 5.4.3
+  echarts-wordcloud:
+    specifier: ^2.1.0
+    version: 2.1.0(echarts@5.4.3)
   lucide-react:
     specifier: ^0.310.0
     version: 0.310.0(react@18.2.0)
@@ -1264,6 +1270,21 @@ packages:
   /eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
+  /echarts-wordcloud@2.1.0(echarts@5.4.3):
+    resolution: {integrity: sha512-Kt1JmbcROgb+3IMI48KZECK2AP5lG6bSsOEs+AsuwaWJxQom31RTNd6NFYI01E/YaI1PFZeueaupjlmzSQasjQ==}
+    peerDependencies:
+      echarts: ^5.0.1
+    dependencies:
+      echarts: 5.4.3
+    dev: false
+
+  /echarts@5.4.3:
+    resolution: {integrity: sha512-mYKxLxhzy6zyTi/FaEbJMOZU1ULGEQHaeIeuMR5L+JnJTpz+YR03mnnpBhbR4+UYJAgiXgpyTVLffPAjOTLkZA==}
+    dependencies:
+      tslib: 2.3.0
+      zrender: 5.4.4
+    dev: false
+
   /electron-to-chromium@1.4.632:
     resolution: {integrity: sha512-JGmudTwg7yxMYvR/gWbalqqQiyu7WTFv2Xu3vw4cJHXPFxNgAk0oy8UHaer8nLF4lZJa+rNoj6GsrKIVJTV6Tw==}
     dev: true
@@ -2283,6 +2304,10 @@ packages:
   /ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
+  /tslib@2.3.0:
+    resolution: {integrity: sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==}
+    dev: false
+
   /type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -2404,3 +2429,9 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zrender@5.4.4:
+    resolution: {integrity: sha512-0VxCNJ7AGOMCWeHVyTrGzUgrK4asT4ml9PEkeGirAkKNYXYzoPJCLvmyfdoOXcjTHPs10OZVMfD1Rwg16AZyYw==}
+    dependencies:
+      tslib: 2.3.0
+    dev: false
