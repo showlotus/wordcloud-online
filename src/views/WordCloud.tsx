@@ -1,11 +1,28 @@
 import * as echarts from 'echarts'
 import 'echarts-wordcloud'
+import convert from 'color-convert'
 import { useEffect, useRef } from 'react'
-import { data } from '@/views/data'
+import Square from '@/assets/icons/Square.svg'
+import { genToken } from '@/lib/genToken'
 
 function WordCloud() {
   const elRef = useRef(null)
   const maskImage = new Image()
+
+  let color = ''
+  color = '#d19fec'
+  color = '#f5c353'
+  color = '#a146c2'
+  color = '#4962e3'
+  color = '#66a9f1'
+  color = '#e6702e'
+  color = '#41906b'
+  color = '#67bd63'
+  color = '#ef8d8a'
+  color = '#ce423a'
+  const primaryColor = color
+
+  const data = genToken()
   const option = {
     tooltip: {},
     series: [
@@ -13,7 +30,7 @@ function WordCloud() {
       {
         type: 'wordCloud',
         sizeRange: [4, 150],
-        rotationRange: [0, 0],
+        rotationRange: [0, 30],
         gridSize: 0,
         shape: 'pentagon',
         maskImage: maskImage,
@@ -25,20 +42,18 @@ function WordCloud() {
         textStyle: {
           fontWeight: 'bold',
           color: function () {
-            return (
-              'rgb(' +
-              [
-                Math.round(Math.random() * 200) + 20,
-                Math.round(Math.random() * 20),
-                Math.round(Math.random() * 20) + 20,
-              ].join(',') +
-              ')'
-            )
+            const [h, , l] = convert.hex.hsl(primaryColor)
+            const c1 = convert.hsl.rgb([
+              h,
+              Math.floor(Math.random() * 90) + 10,
+              l,
+            ])
+            return `rgb(${c1})`
           },
         },
         emphasis: {
           textStyle: {
-            color: '#528',
+            color: primaryColor,
             shadowBlur: 10,
             shadowColor: '#333',
           },
@@ -50,16 +65,17 @@ function WordCloud() {
 
   useEffect(() => {
     const chart = echarts.init(elRef.current)
+    chart.on('finished', function () {
+      console.log('finished')
+    })
     maskImage.onload = function () {
       chart.setOption(option)
     }
     maskImage.crossOrigin = 'anonymous'
-    maskImage.src =
-      'https://raw.githubusercontent.com/ecomfe/echarts-wordcloud/master/example/logo.png'
-    // window.onresize = chart.resize
+    maskImage.src = Square
   })
 
-  return <div ref={elRef} style={{ width: '800px', height: '600px' }}></div>
+  return <div ref={elRef} style={{ width: '800px', height: '700px' }}></div>
 }
 
 export default WordCloud
