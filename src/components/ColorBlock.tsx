@@ -1,6 +1,9 @@
-import { getThemeToken } from '@/lib/utils'
-import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { themeColors } from '@/lib/config'
+import { getThemeToken } from '@/lib/utils'
+import type { RootState } from '@/store'
+import { updateThemeColor } from '@/store/themeColorSlice'
 
 const Wrap = styled.div`
   display: flex;
@@ -17,45 +20,39 @@ const Block = styled.div<{
   width: 40px;
   height: 40px;
   border: 1px solid;
-  border-color: ${(props) =>
-    props.$isActive ? props.$colorPrimaryBorderHover : props.$colorBorder};
+  border-color: ${(props) => (props.$isActive ? '#000' : '#d9d9d9')};
   border-radius: 2px;
-  box-shadow: 0 0 5px ${(props) => (props.$isActive ? '#ccc' : 'initial')};
+  box-shadow: ${(props) =>
+    props.$isActive ? '0 0 0 2px rgba(0, 0, 0, 0.1)' : 'initial'};
   transition: all ease 0.2s;
 
   cursor: pointer;
 
   &:hover {
-    border-color: ${(props) => props.$colorPrimaryBorderHover};
-    box-shadow: 0 0 5px #ccc;
+    border-color: #000;
+    /* box-shadow: 0 0 5px #ccc; */
   }
 `
 
 export default function ColorBlock() {
+  const themeColor = useSelector((state: RootState) => state.themeColor.value)
+  const dispatch = useDispatch()
+
   const { colorBorder, colorPrimaryBorderHover } = getThemeToken()
-  const colors = [
-    '#ce423a',
-    '#ef8d8a',
-    '#e6702e',
-    '#f5c353',
-    '#41906b',
-    '#67bd63',
-    '#66a9f1',
-    '#4962e3',
-    '#da9cf1',
-    '#a146c2',
-  ]
-  const [currColor, setCurrColor] = useState(colors[0])
+  console.log(colorBorder, colorPrimaryBorderHover)
+  const handleSelectColor = (color: string) => {
+    dispatch(updateThemeColor(color))
+  }
 
   return (
     <Wrap>
-      {colors.map((color) => (
+      {themeColors.map((color) => (
         <Block
           key={color}
-          $isActive={color === currColor}
+          $isActive={color === themeColor}
           $colorBorder={colorBorder}
           $colorPrimaryBorderHover={colorPrimaryBorderHover}
-          onClick={() => setCurrColor(color)}
+          onClick={() => handleSelectColor(color)}
         >
           <div
             className="w-full h-full rounded-sm"

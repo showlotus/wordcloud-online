@@ -10,7 +10,8 @@ import Square from '@/assets/icons/Square.svg?react'
 import Triangle from '@/assets/icons/Triangle.svg?react'
 import WeChat from '@/assets/icons/WeChat.svg?react'
 import Whale from '@/assets/icons/Whale.svg?react'
-import { getThemeToken } from '@/lib/utils'
+import type { RootState } from '@/store'
+import { useSelector } from 'react-redux'
 
 interface MaskSvgProps {
   name: string
@@ -21,7 +22,7 @@ interface Ops {
 }
 
 export default function MaskSvg(props: MaskSvgProps) {
-  const { colorPrimary } = getThemeToken()
+  const themeColor = useSelector((state: RootState) => state.themeColor.value)
   const ops: Ops = {
     Circle,
     Collect,
@@ -35,5 +36,12 @@ export default function MaskSvg(props: MaskSvgProps) {
     Whale,
   }
   const Component = ops[props.name] || <></>
-  return <Component width={30} height={30} color={colorPrimary} />
+  return (
+    <Component
+      width={30}
+      height={30}
+      color={themeColor}
+      style={{ transition: 'all 0.2s ease' }}
+    />
+  )
 }

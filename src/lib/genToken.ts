@@ -31,7 +31,7 @@ export function genToken() {
   }
   const data = Array.from(map.entries())
     .sort((a, b) => b[1] - a[1])
-    // .filter((_v, i) => i < 500)
+    .filter((_v, i) => i < 100)
     .map((v) => ({ name: v[0], value: v[1] }))
   return data
 }

@@ -1,5 +1,4 @@
-export const TangPoetry = `
-010杜甫：佳人
+export const TangPoetry = `010杜甫：佳人
 
 绝代有佳人，幽居在空谷。
 自云良家子，零落依草木。

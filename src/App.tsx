@@ -1,31 +1,31 @@
 import { ConfigProvider, Divider } from 'antd'
-import './App.css'
+import styled from 'styled-components'
 import WordCloud from '@/views/WordCloud'
 import ConfigArea from '@/views/ConfigArea'
+import './App.css'
+
+const Wrap = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+`
 
 function App() {
-  const colorPrimary = '#c63520'
   return (
     <ConfigProvider
       theme={{
         token: {
-          // Seed Token，影响范围大
-          colorPrimary,
+          // colorPrimary: '#000',
+          // colorPrimaryBorderHover: '#000',
+          // colorPrimaryHover: 'transparent',
           borderRadius: 2,
-
-          // 派生变量，影响范围小
-          // colorBgContainer: '#f6ffed',
         },
       }}
     >
-      <div className="flex justify-evenly">
+      <Wrap>
         <WordCloud />
-        <Divider
-          type="vertical"
-          style={{ height: 'auto', borderColor: colorPrimary }}
-        />
+        <Divider type="vertical" style={{ height: 'auto' }} />
         <ConfigArea />
-      </div>
+      </Wrap>
     </ConfigProvider>
   )
 }
