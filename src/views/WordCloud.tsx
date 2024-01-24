@@ -5,17 +5,16 @@ import { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import type { RootState } from '@/store'
 import maskImgs from '@/lib/mask'
-import { data } from './data'
-// import { genToken } from '@/lib/genToken'
+import parse from '@/lib/parse'
 
 function WordCloud() {
   const themeColor = useSelector((state: RootState) => state.themeColor.value)
   const maskImage = useSelector((state: RootState) => state.maskImage.value)
+  const sourceData = useSelector((state: RootState) => state.sourceData.value)
 
   const elRef = useRef(null)
   const img = new Image()
 
-  // const data = genToken()
   const option = {
     tooltip: {},
     series: [
@@ -46,22 +45,19 @@ function WordCloud() {
         },
         emphasis: {
           textStyle: {
-            color: '#000',
-            // color: themeColor,
+            // color: '#000',
+            color: themeColor,
             shadowBlur: 10,
             shadowColor: '#333',
           },
         },
-        data,
+        data: parse(sourceData),
       },
     ],
   }
 
   useEffect(() => {
     const chart = echarts.init(elRef.current)
-    // chart.on('finished', function () {
-    //   console.log('finished')
-    // })
     img.onload = function () {
       chart.setOption(option)
     }

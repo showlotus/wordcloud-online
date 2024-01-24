@@ -39,7 +39,6 @@ export default function ColorBlock() {
   const dispatch = useDispatch()
 
   const { colorBorder, colorPrimaryBorderHover } = getThemeToken()
-  console.log(colorBorder, colorPrimaryBorderHover)
   const handleSelectColor = (color: string) => {
     dispatch(updateThemeColor(color))
   }

@@ -1,8 +1,11 @@
-import { Form, Input } from 'antd'
+import { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { Form, Input, Select } from 'antd'
 import styled from 'styled-components'
 import MaskImage from '@/components/MaskImage'
 import ColorBlock from '@/components/ColorBlock'
-import { TangPoetry } from '@/assets/data/demo'
+import { updateSourceData } from '@/store/sourceDataSlice'
+import { txtDemo } from '@/assets/data/txtDemo'
 
 const Wrap = styled.div`
   .custom-input {
@@ -18,10 +21,35 @@ const Wrap = styled.div`
       border-color: #000;
       box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
     }
+
+    .ant-input-data-count {
+      /* top: -22px; */
+    }
   }
 `
 
 export default function ConfigArea() {
+  const dispatch = useDispatch()
+
+  const [inputValue, setInputValue] = useState(txtDemo)
+  const options = [
+    {
+      label: '李白',
+      value: '李白',
+    },
+    {
+      label: '杜甫',
+      value: '杜甫',
+    },
+  ]
+  const handleChange = (value: string) => {
+    console.log(value)
+  }
+
+  useEffect(() => {
+    dispatch(updateSourceData(inputValue))
+  })
+
   return (
     <Wrap>
       <Form layout="vertical" style={{ flex: '400px 1 300px' }}>
@@ -33,31 +61,25 @@ export default function ConfigArea() {
         </Form.Item>
         <Form.Item label="文本源">
           <Input.TextArea
-            value={TangPoetry}
+            className="custom-input"
+            value={inputValue}
+            showCount
             rows={4}
             autoSize={{ minRows: 4, maxRows: 8 }}
-            className="custom-input"
+            onChange={(e) => setInputValue(e.target.value)}
           />
         </Form.Item>
-        {/* <Form.Item label="过滤词性">
-        <Select
-          mode="multiple"
-          allowClear
-          style={{ width: '100%', textAlign: 'left' }}
-          placeholder="请选择要过滤的词性"
-          options={[
-            { label: 'A', value: 'a' },
-            { label: 'B', value: 'b' },
-            { label: 'C', value: 'c' },
-            { label: 'D', value: 'd' },
-            { label: 'E', value: 'e' },
-            { label: 'F', value: 'f' },
-          ]}
-        />
-      </Form.Item>
-      <Form.Item>
-        <Button>生成</Button>
-      </Form.Item> */}
+        <Form.Item label="过滤词">
+          <Select
+            className="custom-input"
+            mode="tags"
+            allowClear
+            style={{ width: '100%', textAlign: 'left' }}
+            placeholder="请输入要过滤的词"
+            onChange={handleChange}
+            options={options}
+          />
+        </Form.Item>
       </Form>
     </Wrap>
   )

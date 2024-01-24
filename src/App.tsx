@@ -14,7 +14,7 @@ function App() {
     <ConfigProvider
       theme={{
         token: {
-          // colorPrimary: '#000',
+          colorPrimary: '#000',
           // colorPrimaryBorderHover: '#000',
           // colorPrimaryHover: 'transparent',
           borderRadius: 2,
@@ -23,7 +23,10 @@ function App() {
     >
       <Wrap>
         <WordCloud />
-        <Divider type="vertical" style={{ height: 'auto' }} />
+        <Divider
+          type="vertical"
+          style={{ height: 'auto', marginRight: '50px' }}
+        />
         <ConfigArea />
       </Wrap>
     </ConfigProvider>

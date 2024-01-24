@@ -1,5 +1,4 @@
 import { Segment, useDefault, Optimizer } from 'segmentit'
-import { TangPoetry } from '@/assets/data/demo'
 
 interface Word {
   w: string
@@ -23,15 +22,16 @@ class CustomOptimizer extends Optimizer {
 // eslint-disable-next-line react-hooks/rules-of-hooks
 const segmentit = useDefault(new Segment())
 segmentit.use(CustomOptimizer)
-export function genToken() {
-  const tokens = segmentit.doSegment(TangPoetry) as Word[]
+
+export function genToken(str: string) {
+  const tokens = segmentit.doSegment(str) as Word[]
   const map = new Map()
   for (const { w } of tokens) {
     map.set(w, (map.get(w) || 0) + 1)
   }
   const data = Array.from(map.entries())
     .sort((a, b) => b[1] - a[1])
-    .filter((_v, i) => i < 100)
+    // .filter((_v, i) => i < 100)
     .map((v) => ({ name: v[0], value: v[1] }))
   return data
 }
