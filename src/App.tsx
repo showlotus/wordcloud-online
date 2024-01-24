@@ -14,7 +14,7 @@ function App() {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: '#000',
+          colorPrimary: '#aaa',
           // colorPrimaryBorderHover: '#000',
           // colorPrimaryHover: 'transparent',
           borderRadius: 2,

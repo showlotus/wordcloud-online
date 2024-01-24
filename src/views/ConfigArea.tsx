@@ -1,16 +1,20 @@
-import { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Form, Input, Select } from 'antd'
 import styled from 'styled-components'
 import MaskImage from '@/components/MaskImage'
 import ColorBlock from '@/components/ColorBlock'
 import { updateSourceData } from '@/store/sourceDataSlice'
-import { txtDemo } from '@/assets/data/txtDemo'
+import type { RootState } from '@/store'
+import { updateFilterKeys } from '@/store/filterKeysSlice'
 
 const Wrap = styled.div`
   .custom-input {
     &:hover {
       border-color: #000;
+
+      .ant-select-selector {
+        border-color: #000 !important;
+      }
     }
 
     &:focus {
@@ -20,6 +24,11 @@ const Wrap = styled.div`
     &:focus-within {
       border-color: #000;
       box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+
+      .ant-select-selector {
+        border-color: #000 !important;
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1) !important;
+      }
     }
 
     .ant-input-data-count {
@@ -29,26 +38,14 @@ const Wrap = styled.div`
 `
 
 export default function ConfigArea() {
+  const filterKeys = useSelector((state: RootState) => state.filterKeys.value)
+  const sourceData = useSelector((state: RootState) => state.sourceData.value)
   const dispatch = useDispatch()
 
-  const [inputValue, setInputValue] = useState(txtDemo)
   const options = [
-    {
-      label: '李白',
-      value: '李白',
-    },
-    {
-      label: '杜甫',
-      value: '杜甫',
-    },
+    { name: 'A', value: 'A' },
+    { name: 'B', value: 'B' },
   ]
-  const handleChange = (value: string) => {
-    console.log(value)
-  }
-
-  useEffect(() => {
-    dispatch(updateSourceData(inputValue))
-  })
 
   return (
     <Wrap>
@@ -62,22 +59,23 @@ export default function ConfigArea() {
         <Form.Item label="文本源">
           <Input.TextArea
             className="custom-input"
-            value={inputValue}
-            showCount
+            value={sourceData}
+            // showCount
             rows={4}
             autoSize={{ minRows: 4, maxRows: 8 }}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={(e) => dispatch(updateSourceData(e.target.value))}
           />
         </Form.Item>
         <Form.Item label="过滤词">
           <Select
             className="custom-input"
-            mode="tags"
+            mode="multiple"
             allowClear
             style={{ width: '100%', textAlign: 'left' }}
             placeholder="请输入要过滤的词"
-            onChange={handleChange}
+            value={filterKeys}
             options={options}
+            onChange={(value) => dispatch(updateFilterKeys(value))}
           />
         </Form.Item>
       </Form>

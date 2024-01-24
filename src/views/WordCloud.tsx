@@ -11,6 +11,7 @@ function WordCloud() {
   const themeColor = useSelector((state: RootState) => state.themeColor.value)
   const maskImage = useSelector((state: RootState) => state.maskImage.value)
   const sourceData = useSelector((state: RootState) => state.sourceData.value)
+  const filterKeys = useSelector((state: RootState) => state.filterKeys.value)
 
   const elRef = useRef(null)
   const img = new Image()
@@ -22,7 +23,7 @@ function WordCloud() {
       {
         type: 'wordCloud',
         sizeRange: [4, 150],
-        rotationRange: [0, 30],
+        rotationRange: [0, 0],
         gridSize: 0,
         shape: 'pentagon',
         maskImage: img,
@@ -34,10 +35,18 @@ function WordCloud() {
         textStyle: {
           fontWeight: 'bold',
           color: function () {
+            const c = convert.hex.rgb(themeColor)
+            return `rgb(${c.map(
+              (v) =>
+                (Math.random() < 0.5 ? -1 : 1) *
+                  Math.floor(Math.random() * 80) +
+                v
+            )})`
             const [h, , l] = convert.hex.hsl(themeColor)
             const c1 = convert.hsl.rgb([
-              h,
-              Math.floor(Math.random() * 90) + 10,
+              h +
+                (Math.random() < 0.5 ? -1 : 1) * Math.floor(Math.random() * 70),
+              Math.floor(Math.random() * 50) + 50,
               l,
             ])
             return `rgb(${c1})`
@@ -51,7 +60,7 @@ function WordCloud() {
             shadowColor: '#333',
           },
         },
-        data: parse(sourceData),
+        data: parse(sourceData, filterKeys),
       },
     ],
   }

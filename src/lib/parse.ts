@@ -1,11 +1,18 @@
 import { genToken } from './genToken'
 
-export default function parse(sourceData: string) {
+interface Data {
+  name: string
+  value: number
+}
+
+export default function parse(sourceData: string, filterKeys: string[]) {
+  const filter = (data: Data[]) =>
+    data.filter((v) => !filterKeys.includes(v.name))
   try {
-    const data = JSON.parse(sourceData)
-    return data
+    const data = JSON.parse(sourceData) as Data[]
+    return filter(data)
   } catch (e) {
     console.warn('Failed to parse the JSON file.')
-    return genToken(sourceData)
+    return filter(genToken(sourceData))
   }
 }
