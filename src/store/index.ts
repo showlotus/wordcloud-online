@@ -3,6 +3,7 @@ import themeColorReducer from './themeColorSlice'
 import maskImageReducer from './maskImageSlice'
 import sourceDataReducer from './sourceDataSlice'
 import filterKeysReducer from './filterKeysSlice'
+import tokenKeysReducer from './tokenKeysSlice'
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     maskImage: maskImageReducer,
     sourceData: sourceDataReducer,
     filterKeys: filterKeysReducer,
+    tokenKeys: tokenKeysReducer,
   },
 })
 

@@ -24,6 +24,7 @@ const segmentit = useDefault(new Segment())
 segmentit.use(CustomOptimizer)
 
 export function genToken(str: string) {
+  const MAX_COUNT = 500
   const tokens = segmentit.doSegment(str) as Word[]
   const map = new Map()
   for (const { w } of tokens) {
@@ -31,7 +32,7 @@ export function genToken(str: string) {
   }
   const data = Array.from(map.entries())
     .sort((a, b) => b[1] - a[1])
-    // .filter((_v, i) => i < 100)
+    .filter((_v, i) => i < MAX_COUNT)
     .map((v) => ({ name: v[0], value: v[1] }))
   return data
 }
