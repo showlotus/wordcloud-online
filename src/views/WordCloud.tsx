@@ -1,28 +1,24 @@
 import * as echarts from 'echarts'
 import 'echarts-wordcloud'
-import { useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useMemo, useRef } from 'react'
+import { useSelector } from 'react-redux'
 import { Button } from 'antd'
 import { DownloadOutlined, SyncOutlined } from '@ant-design/icons'
 import type { RootState } from '@/store'
 import maskImgs from '@/lib/mask'
-import parse from '@/lib/parse'
-import { updateTokenKeys } from '@/store/tokenKeysSlice'
 import genColor from '@/lib/genColor'
 import exportImage from '@/lib/exportImage'
 
 function WordCloud() {
   const themeColor = useSelector((state: RootState) => state.themeColor.value)
   const maskImage = useSelector((state: RootState) => state.maskImage.value)
-  const sourceData = useSelector((state: RootState) => state.sourceData.value)
+  const sourceToken = useSelector((state: RootState) => state.sourceToken.value)
   const filterKeys = useSelector((state: RootState) => state.filterKeys.value)
-  const dispatch = useDispatch()
 
-  console.time('parse')
-  const data = parse(sourceData, filterKeys)
-  console.timeEnd('parse')
-  console.log('parse')
-  // dispatch(updateTokenKeys(data.map((v) => ({ label: v.name, value: v.name }))))
+  const data = useMemo(() => {
+    console.log('update echarts')
+    return sourceToken.filter((v) => !filterKeys.includes(v.name))
+  }, [sourceToken, filterKeys])
 
   const canvasRef = useRef(null)
   const img = new Image()
@@ -55,7 +51,7 @@ function WordCloud() {
             shadowColor: '#333',
           },
         },
-        data,
+        data: data,
       },
     ],
   }
@@ -94,10 +90,7 @@ function WordCloud() {
 
   return (
     <div style={{ position: 'relative' }}>
-      <div
-        ref={canvasRef}
-        style={{ width: '800px', height: '700px', opacity: 0 }}
-      ></div>
+      <div ref={canvasRef} style={{ width: '800px', height: '700px' }}></div>
       <div
         className="tools"
         style={{

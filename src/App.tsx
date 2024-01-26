@@ -16,23 +16,26 @@ const GithubWrap = styled.div`
   top: 0;
   width: 60px;
   aspect-ratio: 1;
+  cursor: pointer;
 
-  background: linear-gradient(
-    to right top,
-    transparent 50%,
-    #000 51%,
-    transparent 52%
-  );
+  background: linear-gradient(to right top, transparent 50%, #ffc12f 51%);
 
   .github-icon {
     position: absolute;
     right: 8px;
     top: 8px;
     font-size: 20px;
+    color: #fff;
   }
 `
 
 function App() {
+  const handleOpenGithub = () => {
+    window.open('https://github.com/showlotus/wordcloud-online')
+  }
+
+  console.log('app render')
+
   return (
     <ConfigProvider
       theme={{
@@ -50,7 +53,7 @@ function App() {
         />
         <ConfigArea />
       </Wrap>
-      <GithubWrap>
+      <GithubWrap onClick={handleOpenGithub}>
         <GithubOutlined className="github-icon" />
       </GithubWrap>
     </ConfigProvider>

@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const filterKeysSlice = createSlice({
   name: 'filterKeys',
   initialState: {
-    value: [],
+    value: [] as string[],
   },
   reducers: {
     updateFilterKeys(state, action) {

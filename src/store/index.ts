@@ -4,6 +4,7 @@ import maskImageReducer from './maskImageSlice'
 import sourceDataReducer from './sourceDataSlice'
 import filterKeysReducer from './filterKeysSlice'
 import tokenKeysReducer from './tokenKeysSlice'
+import sourceTokenReducer from './sourceTokenSlice'
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     sourceData: sourceDataReducer,
     filterKeys: filterKeysReducer,
     tokenKeys: tokenKeysReducer,
+    sourceToken: sourceTokenReducer,
   },
 })
 

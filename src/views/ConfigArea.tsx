@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Form, Input, Select, Spin, Upload, message } from 'antd'
+import { Button, Form, Select, Spin, Upload, message, Popover } from 'antd'
 import { UploadOutlined, LoadingOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import MaskImage from '@/components/MaskImage'
@@ -7,9 +7,13 @@ import ColorBlock from '@/components/ColorBlock'
 import { updateSourceData } from '@/store/sourceDataSlice'
 import type { RootState } from '@/store'
 import { updateFilterKeys } from '@/store/filterKeysSlice'
-import { useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { txtDemo } from '@/assets/data/txtDemo'
 import { jsonDemo } from '@/assets/data/jsonDemo'
+import { updateSourceToken } from '@/store/sourceTokenSlice'
+import { updateTokenKeys } from '@/store/tokenKeysSlice'
+import type { TokenType } from '@/lib/parseToken'
+import parseToken from '@/lib/parseToken'
 
 const Wrap = styled.div`
   text-align: left;
@@ -39,13 +43,24 @@ const Wrap = styled.div`
   }
 `
 
+const PopoverContent = styled.div`
+  max-width: 350px;
+  height: 200px;
+  overflow: auto;
+`
+
 export default function ConfigArea() {
   const filterKeys = useSelector((state: RootState) => state.filterKeys.value)
-  const sourceData = useSelector((state: RootState) => state.sourceData.value)
   const tokenKeys = useSelector((state: RootState) => state.tokenKeys.value)
   const dispatch = useDispatch()
 
   const [spinning, setSpinning] = useState(false)
+
+  const handleUpdateTokenKeys = (tokens: TokenType[]) => {
+    // dispatch(
+    //   updateTokenKeys(tokens.map((v) => ({ label: v.name, value: v.name })))
+    // )
+  }
 
   const handleBeforeUpload = (file: File) => {
     const fileType = file.type
@@ -60,17 +75,36 @@ export default function ConfigArea() {
     const reader = new FileReader()
     reader.onload = (event) => {
       const fileContent = event.target!.result
-      setTimeout(() => {
-        // setSpinning(false)
-        console.log(fileContent)
-      }, 2000)
-      // dispatch(updateSourceData(fileContent))
+      console.time('parse')
+      const tokens = parseToken(fileContent as string)
+      console.timeEnd('parse')
+      console.log(tokens)
+
+      setSpinning(false)
+      // setTimeout(() => {
+      // }, 2000)
+      // console.log(tokens)
+      // dispatch(updateSourceToken(tokens))
+      // handleUpdateTokenKeys(tokens)
     }
     reader.readAsText(file)
     return false
   }
 
-  dispatch(updateSourceData(jsonDemo))
+  const updateSourceTokenByTxtDemo = () => {
+    const tokens = parseToken(txtDemo)
+    dispatch(updateSourceToken(tokens))
+    handleUpdateTokenKeys(tokens)
+  }
+  const updateSourceTokenByJsonDemo = () => {
+    const tokens = parseToken(jsonDemo)
+    dispatch(updateSourceToken(tokens))
+    handleUpdateTokenKeys(tokens)
+  }
+
+  useEffect(() => {
+    updateSourceTokenByJsonDemo()
+  })
 
   return (
     <Wrap>
@@ -93,14 +127,14 @@ export default function ConfigArea() {
           <ColorBlock />
         </Form.Item>
         <Form.Item label="文本源">
-          <Input.TextArea
+          {/* <Input.TextArea
             className="custom-input"
             value={sourceData}
             showCount
             rows={4}
             autoSize={{ minRows: 4, maxRows: 8 }}
             onChange={(e) => dispatch(updateSourceData(e.target.value))}
-          />
+          /> */}
           <Upload
             maxCount={1}
             accept=".txt,.json"
@@ -115,19 +149,35 @@ export default function ConfigArea() {
               上传 <i> txt </i> 或 <i> json </i>
             </Button>
           </Upload>
-          <Button
-            className="custom-btn"
-            style={{ marginRight: '10px' }}
-            onClick={() => dispatch(updateSourceData(txtDemo))}
+          <Popover
+            content={
+              <PopoverContent>
+                <pre>{txtDemo}</pre>
+              </PopoverContent>
+            }
           >
-            示例一：<i>txt</i>
-          </Button>
-          <Button
-            className="custom-btn"
-            onClick={() => dispatch(updateSourceData(jsonDemo))}
+            <Button
+              className="custom-btn"
+              style={{ marginRight: '10px' }}
+              onClick={updateSourceTokenByTxtDemo}
+            >
+              示例一：<i>txt</i>
+            </Button>
+          </Popover>
+          <Popover
+            content={
+              <PopoverContent>
+                <pre>{jsonDemo}</pre>
+              </PopoverContent>
+            }
           >
-            示例二：<i>json</i>
-          </Button>
+            <Button
+              className="custom-btn"
+              onClick={updateSourceTokenByJsonDemo}
+            >
+              示例二：<i>json</i>
+            </Button>
+          </Popover>
         </Form.Item>
         <Form.Item label="过滤词">
           <Select
