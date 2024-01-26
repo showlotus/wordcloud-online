@@ -1,4 +1,5 @@
 import { ConfigProvider, Divider } from 'antd'
+import { GithubOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import WordCloud from '@/views/WordCloud'
 import ConfigArea from '@/views/ConfigArea'
@@ -9,14 +10,34 @@ const Wrap = styled.div`
   justify-content: space-evenly;
 `
 
+const GithubWrap = styled.div`
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 60px;
+  aspect-ratio: 1;
+
+  background: linear-gradient(
+    to right top,
+    transparent 50%,
+    #000 51%,
+    transparent 52%
+  );
+
+  .github-icon {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    font-size: 20px;
+  }
+`
+
 function App() {
   return (
     <ConfigProvider
       theme={{
         token: {
           colorPrimary: '#aaa',
-          // colorPrimaryBorderHover: '#000',
-          // colorPrimaryHover: 'transparent',
           borderRadius: 2,
         },
       }}
@@ -29,6 +50,9 @@ function App() {
         />
         <ConfigArea />
       </Wrap>
+      <GithubWrap>
+        <GithubOutlined className="github-icon" />
+      </GithubWrap>
     </ConfigProvider>
   )
 }

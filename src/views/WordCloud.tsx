@@ -3,6 +3,7 @@ import 'echarts-wordcloud'
 import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'antd'
+import { DownloadOutlined, SyncOutlined } from '@ant-design/icons'
 import type { RootState } from '@/store'
 import maskImgs from '@/lib/mask'
 import parse from '@/lib/parse'
@@ -93,7 +94,10 @@ function WordCloud() {
 
   return (
     <div style={{ position: 'relative' }}>
-      <div ref={canvasRef} style={{ width: '800px', height: '700px' }}></div>
+      <div
+        ref={canvasRef}
+        style={{ width: '800px', height: '700px', opacity: 0 }}
+      ></div>
       <div
         className="tools"
         style={{
@@ -105,17 +109,23 @@ function WordCloud() {
           gap: '10px',
         }}
       >
-        <Button className="custom-btn" onClick={handleRefresh}>
+        <Button
+          className="custom-btn"
+          onClick={handleRefresh}
+          icon={<SyncOutlined />}
+        >
           刷新
         </Button>
-        <Button className="custom-btn" onClick={handleExport}>
+        <Button
+          className="custom-btn"
+          onClick={handleExport}
+          icon={<DownloadOutlined />}
+        >
           导出
         </Button>
       </div>
     </div>
   )
-
-  return
 }
 
 export default WordCloud
