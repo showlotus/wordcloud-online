@@ -48,12 +48,13 @@ function App() {
 
   const handleUpdateSourceData = useCallback((data: string) => {
     setSpinning(true)
-    const tokens = parseToken(data)
-    const tokenKeys = tokens.map((v) => ({ label: v.name, value: v.name }))
-    dispatch(updateSourceToken(tokens))
-    dispatch(updateTokenKeys(tokenKeys))
-    dispatch(updateFilterKeys([]))
-    setSpinning(false)
+    parseToken(data).then((tokens) => {
+      const tokenKeys = tokens.map((v) => ({ label: v.name, value: v.name }))
+      dispatch(updateSourceToken(tokens))
+      dispatch(updateTokenKeys(tokenKeys))
+      dispatch(updateFilterKeys([]))
+      setSpinning(false)
+    })
   }, [])
 
   const handleOpenGithub = () => {
@@ -61,10 +62,11 @@ function App() {
   }
 
   useEffect(() => {
-    const tokens = parseToken(jsonDemo)
-    const tokenKeys = tokens.map((v) => ({ label: v.name, value: v.name }))
-    dispatch(updateSourceToken(tokens))
-    dispatch(updateTokenKeys(tokenKeys))
+    parseToken(jsonDemo).then((tokens) => {
+      const tokenKeys = tokens.map((v) => ({ label: v.name, value: v.name }))
+      dispatch(updateSourceToken(tokens))
+      dispatch(updateTokenKeys(tokenKeys))
+    })
   }, [])
 
   return (

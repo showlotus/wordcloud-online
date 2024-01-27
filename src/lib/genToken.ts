@@ -1,4 +1,5 @@
 import { Segment, useDefault, Optimizer } from 'segmentit'
+import type { TokenType } from './parseToken'
 
 interface Word {
   w: string
@@ -23,9 +24,37 @@ class CustomOptimizer extends Optimizer {
 const segmentit = useDefault(new Segment())
 segmentit.use(CustomOptimizer)
 
-export function genToken(str: string) {
+/**
+ * 最大处理字符长度
+ */
+const MAX_PARSE_LEN = 100
+
+function wait(time = 500) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, time)
+  })
+}
+
+async function asyncParse(str: string) {
+  const res: Word[] = []
+  while (str.length > MAX_PARSE_LEN) {
+    const currStr = str.slice(0, MAX_PARSE_LEN)
+    str = str.slice(MAX_PARSE_LEN)
+    const tokens = segmentit.doSegment(currStr) as Word[]
+    res.push(...tokens)
+    await wait()
+  }
+  console.log('res', res)
+  return res
+}
+
+export async function genToken(str: string) {
   const MAX_COUNT = 500
-  const tokens = segmentit.doSegment(str) as Word[]
+  // TEST parse: 48746.538818359375 ms
+  // 1w 个字符平均解析速度为 100ms 内
+  console.time('parse')
+  const tokens = await asyncParse(str)
+  console.timeEnd('parse')
   const map = new Map()
   for (const { w } of tokens) {
     map.set(w, (map.get(w) || 0) + 1)
@@ -34,5 +63,5 @@ export function genToken(str: string) {
     .sort((a, b) => b[1] - a[1])
     .filter((_v, i) => i < MAX_COUNT)
     .map((v) => ({ name: v[0], value: v[1] }))
-  return data
+  return data as TokenType[]
 }

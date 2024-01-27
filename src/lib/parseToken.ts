@@ -5,10 +5,10 @@ export interface TokenType {
   value: number
 }
 
-export default function parseToken(sourceData: string): TokenType[] {
+export default function parseToken(sourceData: string): Promise<TokenType[]> {
   try {
     const data = JSON.parse(sourceData) as TokenType[]
-    return data
+    return Promise.resolve(data)
   } catch (e) {
     console.warn('Failed to parse the JSON file.')
     return genToken(sourceData)
