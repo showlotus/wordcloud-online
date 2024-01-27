@@ -5,12 +5,12 @@ import { GithubOutlined, LoadingOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import WordCloud from '@/views/WordCloud'
 import ConfigArea from '@/views/ConfigArea'
-import './App.css'
 import parseToken from './lib/parseToken'
 import { updateSourceToken } from './store/sourceTokenSlice'
 import { updateTokenKeys } from './store/tokenKeysSlice'
 import { updateFilterKeys } from './store/filterKeysSlice'
 import { jsonDemo } from './assets/data/jsonDemo'
+import './App.css'
 
 const Wrap = styled.div`
   display: flex;
@@ -42,7 +42,6 @@ const GithubWrap = styled.div`
 `
 
 function App() {
-  console.log('app render')
   const dispatch = useDispatch()
   const [spinning, setSpinning] = useState(false)
 
