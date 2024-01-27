@@ -16,7 +16,7 @@ function WordCloud() {
   const filterKeys = useSelector((state: RootState) => state.filterKeys.value)
 
   const data = useMemo(() => {
-    console.log('update echarts')
+    console.log('update echarts data')
     return sourceToken.filter((v) => !filterKeys.includes(v.name))
   }, [sourceToken, filterKeys])
 
@@ -45,7 +45,6 @@ function WordCloud() {
         },
         emphasis: {
           textStyle: {
-            // color: '#000',
             color: themeColor,
             shadowBlur: 10,
             shadowColor: '#333',
@@ -79,6 +78,7 @@ function WordCloud() {
 
     img.onload = function () {
       chart?.setOption(option)
+      console.log('render echarts')
     }
     img.crossOrigin = 'anonymous'
     img.src = maskImgs[maskImage]
@@ -86,7 +86,7 @@ function WordCloud() {
     return () => {
       chart?.dispose()
     }
-  })
+  }, [themeColor, maskImage, sourceToken, filterKeys])
 
   return (
     <div style={{ position: 'relative' }}>

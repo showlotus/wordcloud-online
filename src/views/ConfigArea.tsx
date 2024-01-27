@@ -1,19 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Form, Select, Spin, Upload, message, Popover } from 'antd'
-import { UploadOutlined, LoadingOutlined } from '@ant-design/icons'
+import { Button, Form, Select, Upload, message, Popover } from 'antd'
+import { UploadOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import MaskImage from '@/components/MaskImage'
 import ColorBlock from '@/components/ColorBlock'
-import { updateSourceData } from '@/store/sourceDataSlice'
 import type { RootState } from '@/store'
 import { updateFilterKeys } from '@/store/filterKeysSlice'
-import { useCallback, useEffect, useMemo, useState } from 'react'
 import { txtDemo } from '@/assets/data/txtDemo'
 import { jsonDemo } from '@/assets/data/jsonDemo'
-import { updateSourceToken } from '@/store/sourceTokenSlice'
-import { updateTokenKeys } from '@/store/tokenKeysSlice'
-import type { TokenType } from '@/lib/parseToken'
-import parseToken from '@/lib/parseToken'
 
 const Wrap = styled.div`
   text-align: left;
@@ -49,18 +43,15 @@ const PopoverContent = styled.div`
   overflow: auto;
 `
 
-export default function ConfigArea() {
+interface Props {
+  updateSourceData: (data: string) => void
+}
+
+export default function ConfigArea(props: Props) {
+  const { updateSourceData } = props
   const filterKeys = useSelector((state: RootState) => state.filterKeys.value)
   const tokenKeys = useSelector((state: RootState) => state.tokenKeys.value)
   const dispatch = useDispatch()
-
-  const [spinning, setSpinning] = useState(false)
-
-  const handleUpdateTokenKeys = (tokens: TokenType[]) => {
-    // dispatch(
-    //   updateTokenKeys(tokens.map((v) => ({ label: v.name, value: v.name })))
-    // )
-  }
 
   const handleBeforeUpload = (file: File) => {
     const fileType = file.type
@@ -70,52 +61,17 @@ export default function ConfigArea() {
       return false
     }
 
-    setSpinning(true)
-
     const reader = new FileReader()
     reader.onload = (event) => {
-      const fileContent = event.target!.result
-      console.time('parse')
-      const tokens = parseToken(fileContent as string)
-      console.timeEnd('parse')
-      console.log(tokens)
-
-      setSpinning(false)
-      // setTimeout(() => {
-      // }, 2000)
-      // console.log(tokens)
-      // dispatch(updateSourceToken(tokens))
-      // handleUpdateTokenKeys(tokens)
+      const fileContent = event.target!.result as string
+      updateSourceData(fileContent)
     }
     reader.readAsText(file)
     return false
   }
 
-  const updateSourceTokenByTxtDemo = () => {
-    const tokens = parseToken(txtDemo)
-    dispatch(updateSourceToken(tokens))
-    handleUpdateTokenKeys(tokens)
-  }
-  const updateSourceTokenByJsonDemo = () => {
-    const tokens = parseToken(jsonDemo)
-    dispatch(updateSourceToken(tokens))
-    handleUpdateTokenKeys(tokens)
-  }
-
-  useEffect(() => {
-    updateSourceTokenByJsonDemo()
-  })
-
   return (
     <Wrap>
-      <Spin
-        style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' }}
-        spinning={spinning}
-        indicator={<LoadingOutlined />}
-        fullscreen
-        size="large"
-        tip="解析中"
-      ></Spin>
       <Form
         layout="vertical"
         style={{ flex: '1', minWidth: '300px', maxWidth: '480px' }}
@@ -150,6 +106,7 @@ export default function ConfigArea() {
             </Button>
           </Upload>
           <Popover
+            title="纯文本"
             content={
               <PopoverContent>
                 <pre>{txtDemo}</pre>
@@ -159,12 +116,17 @@ export default function ConfigArea() {
             <Button
               className="custom-btn"
               style={{ marginRight: '10px' }}
-              onClick={updateSourceTokenByTxtDemo}
+              onClick={() => updateSourceData(txtDemo)}
             >
               示例一：<i>txt</i>
             </Button>
           </Popover>
           <Popover
+            title={
+              <span>
+                JSON（包含 <i>name</i> 和 <i>value</i> 属性的数组）
+              </span>
+            }
             content={
               <PopoverContent>
                 <pre>{jsonDemo}</pre>
@@ -173,7 +135,7 @@ export default function ConfigArea() {
           >
             <Button
               className="custom-btn"
-              onClick={updateSourceTokenByJsonDemo}
+              onClick={() => updateSourceData(jsonDemo)}
             >
               示例二：<i>json</i>
             </Button>
