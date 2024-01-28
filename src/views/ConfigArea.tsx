@@ -106,7 +106,7 @@ export default function ConfigArea(props: Props) {
             </Button>
           </Upload>
           <Popover
-            title="纯文本"
+            title="纯文本（唐诗三百首）"
             content={
               <PopoverContent>
                 <pre>{txtDemo}</pre>
