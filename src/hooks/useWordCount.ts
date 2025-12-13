@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react'
 
+import WordCountWorker from '../workers/word-count.worker.ts?worker'
+
 interface WordInfo {
   word: string
   tag: string
@@ -50,10 +52,7 @@ export function useWordCount() {
   const workerRef = useRef<Worker>()
 
   useEffect(() => {
-    workerRef.current = new Worker(
-      new URL('../workers/word-count.worker.ts', import.meta.url),
-      { type: 'module' }
-    )
+    workerRef.current = new WordCountWorker()
     return () => workerRef.current?.terminate()
   }, [])
 
