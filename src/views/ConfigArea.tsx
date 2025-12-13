@@ -1,6 +1,7 @@
+import { useDispatch, useSelector } from 'react-redux'
+
 import { UploadOutlined } from '@ant-design/icons'
 import { Button, Form, Popover, Select, Upload, message } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
 
 import { jsonDemo } from '@/assets/data/jsonDemo'
 import { txtDemo } from '@/assets/data/txtDemo'

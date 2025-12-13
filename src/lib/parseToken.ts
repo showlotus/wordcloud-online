@@ -50,7 +50,7 @@ export async function asyncParse(str: string) {
     str = str.slice(MAX_PARSE_LEN)
     const tokens = segmentit.doSegment(currStr) as Word[]
     res.push(...tokens)
-    // await wait()
+    await wait()
   } while (str.length !== 0)
   return res
 }

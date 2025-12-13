@@ -4,9 +4,12 @@
   "printWidth": 80,
   "trailingComma": "none",
   "importOrder": [
-    "<THIRD_PARTY_MODULES>",
+    "^react",
+    "^@?[a-zA-Z-]+[/a-zA-Z]+$",
     "^@/(.*)$",
-    "^[./]"
+    "<THIRD_PARTY_MODULES>",
+    "^[./].*(.js|.ts|.tsx|.jsx|.json)$",
+    "^[./].*\\.(css|less|scss)$"
   ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,

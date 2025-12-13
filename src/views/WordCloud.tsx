@@ -1,9 +1,10 @@
+import { useEffect, useMemo, useRef } from 'react'
+import { useSelector } from 'react-redux'
+
 import { CopyOutlined, DownloadOutlined, SyncOutlined } from '@ant-design/icons'
 import { Button, message } from 'antd'
 import * as echarts from 'echarts'
 import 'echarts-wordcloud'
-import { useEffect, useMemo, useRef } from 'react'
-import { useSelector } from 'react-redux'
 
 import genColor from '@/lib/genColor'
 import { copyImage, exportImage } from '@/lib/image'

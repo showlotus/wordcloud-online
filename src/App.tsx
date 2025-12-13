@@ -1,19 +1,22 @@
-import { GithubOutlined, LoadingOutlined } from '@ant-design/icons'
-import { ConfigProvider, Divider, Spin } from 'antd'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+
+import { GithubOutlined, LoadingOutlined } from '@ant-design/icons'
+import { ConfigProvider, Divider, Spin } from 'antd'
 
 import ConfigArea from '@/views/ConfigArea'
 import WordCloud from '@/views/WordCloud'
 
-import pkg from '../package.json'
-import './App.less'
 import { jsonDemo } from './assets/data/jsonDemo'
 import { useWordCount } from './hooks/useWordCount'
-import { TokenType } from './lib/parseToken'
+import type { TokenType } from './lib/parseToken'
 import { updateFilterKeys } from './store/filterKeysSlice'
 import { updateSourceToken } from './store/sourceTokenSlice'
 import { updateTokenKeys } from './store/tokenKeysSlice'
+
+import pkg from '../package.json'
+
+import './App.less'
 
 function App() {
   const dispatch = useDispatch()
