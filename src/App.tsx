@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { ConfigProvider, Divider, Spin } from 'antd'
 import { GithubOutlined, LoadingOutlined } from '@ant-design/icons'
-import styled from 'styled-components'
 import WordCloud from '@/views/WordCloud'
 import ConfigArea from '@/views/ConfigArea'
 import parseToken from './lib/parseToken'
@@ -10,36 +9,7 @@ import { updateSourceToken } from './store/sourceTokenSlice'
 import { updateTokenKeys } from './store/tokenKeysSlice'
 import { updateFilterKeys } from './store/filterKeysSlice'
 import { jsonDemo } from './assets/data/jsonDemo'
-import './App.css'
-
-const Wrap = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-`
-
-const GithubWrap = styled.div`
-  position: fixed;
-  right: 0;
-  top: 0;
-  width: 60px;
-  aspect-ratio: 1;
-
-  background: linear-gradient(to right top, transparent 50%, #ffc12f 51%);
-
-  .github-icon {
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    font-size: 20px;
-    color: #fff;
-    cursor: pointer;
-    transition: all 0.3s;
-
-    &:hover {
-      color: #000;
-    }
-  }
-`
+import './App.less'
 
 function App() {
   const dispatch = useDispatch()
@@ -73,11 +43,11 @@ function App() {
       theme={{
         token: {
           colorPrimary: '#aaa',
-          borderRadius: 2,
+          borderRadius: 4,
         },
       }}
     >
-      <Wrap>
+      <div className="flex justify-evenly">
         <Spin
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' }}
           spinning={spinning}
@@ -92,10 +62,19 @@ function App() {
           style={{ height: 'auto', marginRight: '50px' }}
         />
         <ConfigArea updateSourceData={handleUpdateSourceData} />
-      </Wrap>
-      <GithubWrap>
-        <GithubOutlined className="github-icon" onClick={handleOpenGithub} />
-      </GithubWrap>
+      </div>
+      <div
+        className="fixed right-0 top-0 w-16 aspect-square"
+        style={{
+          background:
+            'linear-gradient(to right top, transparent 50%, #ffc12f 51%)',
+        }}
+      >
+        <GithubOutlined
+          className="text-white text-2xl cursor-pointer transition-all duration-300 hover:text-black absolute right-2 top-2"
+          onClick={handleOpenGithub}
+        />
+      </div>
     </ConfigProvider>
   )
 }

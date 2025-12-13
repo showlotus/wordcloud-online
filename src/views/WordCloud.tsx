@@ -2,12 +2,12 @@ import * as echarts from 'echarts'
 import 'echarts-wordcloud'
 import { useEffect, useMemo, useRef } from 'react'
 import { useSelector } from 'react-redux'
-import { Button } from 'antd'
-import { DownloadOutlined, SyncOutlined } from '@ant-design/icons'
+import { Button, message } from 'antd'
+import { CopyOutlined, DownloadOutlined, SyncOutlined } from '@ant-design/icons'
 import type { RootState } from '@/store'
 import maskImgs from '@/lib/mask'
 import genColor from '@/lib/genColor'
-import exportImage from '@/lib/exportImage'
+import { exportImage, copyImage } from '@/lib/image'
 
 function WordCloud() {
   const themeColor = useSelector((state: RootState) => state.themeColor.value)
@@ -64,6 +64,16 @@ function WordCloud() {
     instance?.resize()
   }
 
+  const handleCopy = async () => {
+    if (!canvasRef.current) {
+      return
+    }
+
+    const instance = echarts.getInstanceByDom(canvasRef.current)
+    await copyImage(instance)
+    message.success('已复制到剪贴板')
+  }
+
   const handleExport = () => {
     if (!canvasRef.current) {
       return
@@ -108,6 +118,13 @@ function WordCloud() {
           icon={<SyncOutlined />}
         >
           刷新
+        </Button>
+        <Button
+          className="custom-btn"
+          onClick={handleCopy}
+          icon={<CopyOutlined />}
+        >
+          复制
         </Button>
         <Button
           className="custom-btn"

@@ -1,0 +1,50 @@
+name: Build and Push
+
+on:
+  push:
+    branches:
+      - master # 你想触发这个工作流的分支，可以根据需要修改
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+
+      - name: Set node
+        uses: actions/setup-node@v2
+        with:
+          # 根据需要设置 Node.js 版本
+          # node-version: lts/*
+          node-version: '18.x'
+          # cache: pnpm
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Run build script
+        run: pnpm run build
+
+      - name: Commit build results
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -m "Automated build commit by GitHub Actions" || echo "No changes to commit"
+          # git pull --rebase
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages # 替换为你想推送的目标分支
+          force: true

@@ -1,47 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Select, Upload, message, Popover } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
-import styled from 'styled-components'
 import MaskImage from '@/components/MaskImage'
 import ColorBlock from '@/components/ColorBlock'
 import type { RootState } from '@/store'
 import { updateFilterKeys } from '@/store/filterKeysSlice'
 import { txtDemo } from '@/assets/data/txtDemo'
 import { jsonDemo } from '@/assets/data/jsonDemo'
-
-const Wrap = styled.div`
-  text-align: left;
-
-  .custom-input {
-    &:hover {
-      border-color: #000;
-
-      .ant-select-selector {
-        border-color: #000 !important;
-      }
-    }
-
-    &:focus {
-      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
-    }
-
-    &:focus-within {
-      border-color: #000;
-      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
-
-      .ant-select-selector {
-        border-color: #000 !important;
-        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1) !important;
-      }
-    }
-  }
-`
-
-const PopoverContent = styled.div`
-  max-width: 350px;
-  height: 200px;
-  overflow: auto;
-`
 
 interface Props {
   updateSourceData: (data: string) => void
@@ -71,7 +36,7 @@ export default function ConfigArea(props: Props) {
   }
 
   return (
-    <Wrap>
+    <div className="text-left config-area">
       <Form
         layout="vertical"
         style={{ flex: '1', minWidth: '300px', maxWidth: '480px' }}
@@ -108,9 +73,9 @@ export default function ConfigArea(props: Props) {
           <Popover
             title="纯文本（唐诗三百首）"
             content={
-              <PopoverContent>
+              <div className="max-w-[350px] h-[200px] overflow-auto">
                 <pre>{txtDemo}</pre>
-              </PopoverContent>
+              </div>
             }
           >
             <Button
@@ -128,9 +93,9 @@ export default function ConfigArea(props: Props) {
               </span>
             }
             content={
-              <PopoverContent>
+              <div className="max-w-[350px] h-[200px] overflow-auto">
                 <pre>{jsonDemo}</pre>
-              </PopoverContent>
+              </div>
             }
           >
             <Button
@@ -154,6 +119,6 @@ export default function ConfigArea(props: Props) {
           />
         </Form.Item>
       </Form>
-    </Wrap>
+    </div>
   )
 }
