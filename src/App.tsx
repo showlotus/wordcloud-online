@@ -1,41 +1,58 @@
+import { GithubOutlined, LoadingOutlined } from '@ant-design/icons'
+import { ConfigProvider, Divider, Spin } from 'antd'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { ConfigProvider, Divider, Spin } from 'antd'
-import { GithubOutlined, LoadingOutlined } from '@ant-design/icons'
-import WordCloud from '@/views/WordCloud'
+
 import ConfigArea from '@/views/ConfigArea'
-import parseToken from './lib/parseToken'
+import WordCloud from '@/views/WordCloud'
+
+import pkg from '../package.json'
+import './App.less'
+import { jsonDemo } from './assets/data/jsonDemo'
+import { useWordCount } from './hooks/useWordCount'
+import { TokenType } from './lib/parseToken'
+import { updateFilterKeys } from './store/filterKeysSlice'
 import { updateSourceToken } from './store/sourceTokenSlice'
 import { updateTokenKeys } from './store/tokenKeysSlice'
-import { updateFilterKeys } from './store/filterKeysSlice'
-import { jsonDemo } from './assets/data/jsonDemo'
-import './App.less'
 
 function App() {
   const dispatch = useDispatch()
   const [spinning, setSpinning] = useState(false)
+  const analyze = useWordCount()
 
-  const handleUpdateSourceData = useCallback((data: string) => {
+  const dispatchData = (tokens: TokenType[]) => {
+    const tokenKeys = tokens.map((v) => ({
+      label: v.name,
+      value: v.name,
+      title: v.value
+    }))
+    dispatch(updateSourceToken(tokens))
+    dispatch(updateTokenKeys(tokenKeys))
+    dispatch(updateFilterKeys([]))
+  }
+
+  const handleUpdateSourceData = useCallback(async (data: string) => {
     setSpinning(true)
-    parseToken(data).then((tokens) => {
-      const tokenKeys = tokens.map((v) => ({ label: v.name, value: v.name }))
-      dispatch(updateSourceToken(tokens))
-      dispatch(updateTokenKeys(tokenKeys))
-      dispatch(updateFilterKeys([]))
+    console.time('analyze words')
+    try {
+      const parsedData = JSON.parse(data) as TokenType[]
+      dispatchData(parsedData)
+    } catch (e) {
+      const tokens = await analyze(data)
+      console.timeEnd('analyze words')
+      dispatchData(tokens)
+    } finally {
       setSpinning(false)
-    })
+    }
   }, [])
 
   const handleOpenGithub = () => {
-    window.open('https://github.com/showlotus/wordcloud-online')
+    window.open(pkg.homepage as string)
   }
 
   useEffect(() => {
-    parseToken(jsonDemo).then((tokens) => {
-      const tokenKeys = tokens.map((v) => ({ label: v.name, value: v.name }))
-      dispatch(updateSourceToken(tokens))
-      dispatch(updateTokenKeys(tokenKeys))
-    })
+    const parsedData = JSON.parse(jsonDemo) as TokenType[]
+    dispatchData(parsedData)
   }, [])
 
   return (
@@ -43,13 +60,12 @@ function App() {
       theme={{
         token: {
           colorPrimary: '#aaa',
-          borderRadius: 4,
-        },
+          borderRadius: 4
+        }
       }}
     >
       <div className="flex justify-evenly">
         <Spin
-          style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' }}
           spinning={spinning}
           indicator={<LoadingOutlined />}
           fullscreen
@@ -67,7 +83,7 @@ function App() {
         className="fixed right-0 top-0 w-16 aspect-square"
         style={{
           background:
-            'linear-gradient(to right top, transparent 50%, #ffc12f 51%)',
+            'linear-gradient(to right top, transparent 50%, #ffc12f 51%)'
         }}
       >
         <GithubOutlined

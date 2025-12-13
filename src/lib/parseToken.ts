@@ -1,4 +1,4 @@
-import { Segment, useDefault, Optimizer } from 'segmentit'
+import { Optimizer, Segment, useDefault } from 'segmentit'
 
 export interface TokenType {
   name: string
@@ -16,7 +16,7 @@ class CustomOptimizer extends Optimizer {
     const POSTAG = this.segment.POSTAG
     // 需要过滤掉的词性列表
     const types = [
-      POSTAG.D_W, // 标点符号
+      POSTAG.D_W // 标点符号
     ]
     // 自定义过滤规则
     const rules = /^\d+$/
@@ -37,27 +37,25 @@ const MAX_PARSE_LEN = 10000
  */
 const MAX_COUNT = 500
 
-function wait(time = 200) {
+function wait(time = 0) {
   return new Promise((resolve) => {
     setTimeout(resolve, time)
   })
 }
 
-async function asyncParse(str: string) {
+export async function asyncParse(str: string) {
   const res: Word[] = []
   do {
     const currStr = str.slice(0, MAX_PARSE_LEN)
     str = str.slice(MAX_PARSE_LEN)
     const tokens = segmentit.doSegment(currStr) as Word[]
     res.push(...tokens)
-    await wait()
+    // await wait()
   } while (str.length !== 0)
   return res
 }
 
-export default async function parseToken(
-  sourceData: string
-): Promise<TokenType[]> {
+export async function parseToken(sourceData: string): Promise<TokenType[]> {
   try {
     const data = JSON.parse(sourceData) as TokenType[]
     return Promise.resolve(data)
@@ -71,8 +69,8 @@ export default async function parseToken(
      * 296898 => 8201ms 36:1
      * 大约为每 35 个字符，解析时间为 1ms
      */
-    console.log(sourceData.length)
-    console.time('parse')
+    // console.log(sourceData.length)
+    // console.time('parse')
     const tokens = await asyncParse(sourceData)
     const map = new Map()
     for (const { w } of tokens) {
@@ -82,7 +80,7 @@ export default async function parseToken(
       .sort((a, b) => b[1] - a[1])
       .filter((_v, i) => i < MAX_COUNT)
       .map((v) => ({ name: v[0], value: v[1] }))
-    console.timeEnd('parse')
+    // console.timeEnd('parse')
     return data as TokenType[]
   }
 }

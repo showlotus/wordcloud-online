@@ -23,7 +23,7 @@ const maskImgs: MaskImage = {
   QQ,
   WeChat,
   Triangle,
-  Ellipse,
+  Ellipse
 }
 
 export default maskImgs

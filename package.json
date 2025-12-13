@@ -21,7 +21,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "bench": "vitest bench --run benchmarks/analyze.bench.ts",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -45,6 +47,7 @@
   "devDependencies": {
     "@svgr/core": "^8.1.0",
     "@svgr/plugin-jsx": "^8.1.0",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.0",
     "@types/color-convert": "^2.0.3",
     "@types/node": "^20.11.4",
     "@types/react": "^18.2.43",
@@ -62,6 +65,7 @@
     "typescript": "^5.2.2",
     "unplugin-icons": "^0.18.2",
     "vite": "^5.2.7",
-    "vite-plugin-svgr": "^4.2.0"
+    "vite-plugin-svgr": "^4.2.0",
+    "vitest": "^4.0.15"
   }
 }

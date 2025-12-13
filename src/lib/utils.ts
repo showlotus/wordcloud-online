@@ -1,6 +1,6 @@
+import { theme } from 'antd'
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { theme } from 'antd'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

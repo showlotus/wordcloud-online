@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import themeColorReducer from './themeColorSlice'
-import maskImageReducer from './maskImageSlice'
+
 import filterKeysReducer from './filterKeysSlice'
-import tokenKeysReducer from './tokenKeysSlice'
+import maskImageReducer from './maskImageSlice'
 import sourceTokenReducer from './sourceTokenSlice'
+import themeColorReducer from './themeColorSlice'
+import tokenKeysReducer from './tokenKeysSlice'
 
 const store = configureStore({
   reducer: {
@@ -11,8 +12,8 @@ const store = configureStore({
     maskImage: maskImageReducer,
     filterKeys: filterKeysReducer,
     tokenKeys: tokenKeysReducer,
-    sourceToken: sourceTokenReducer,
-  },
+    sourceToken: sourceTokenReducer
+  }
 })
 
 export default store

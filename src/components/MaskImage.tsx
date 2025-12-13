@@ -1,9 +1,11 @@
-import maskImgs from '@/lib/mask'
-import MaskSvg from './MaskSvg'
 import { useDispatch, useSelector } from 'react-redux'
+
+import maskImgs from '@/lib/mask'
 import type { RootState } from '@/store'
 import { updateMaskImage } from '@/store/maskImageSlice'
+
 import { Block } from './Block'
+import MaskSvg from './MaskSvg'
 
 export default function MaskImage() {
   const maskImage = useSelector((state: RootState) => state.maskImage.value)

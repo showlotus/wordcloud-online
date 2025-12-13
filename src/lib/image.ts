@@ -7,7 +7,7 @@ export function exportImage(echarts: ECharts | null | undefined) {
 
   const canvas = echarts.renderToCanvas({
     backgroundColor: '#fff',
-    pixelRatio: 2,
+    pixelRatio: 2
   })
 
   const img = new Image()
@@ -28,7 +28,7 @@ export async function copyImage(echarts: ECharts | null | undefined) {
 
   const canvas = echarts.renderToCanvas({
     backgroundColor: '#fff',
-    pixelRatio: 2,
+    pixelRatio: 2
   })
 
   await copyCanvas(canvas)
@@ -46,7 +46,7 @@ async function copyCanvas(canvas: HTMLCanvasElement) {
           throw new Error('Failed to convert canvas to blob')
         }
         await navigator.clipboard.write([
-          new ClipboardItem({ 'image/png': blob }),
+          new ClipboardItem({ 'image/png': blob })
         ])
         resolve()
       } catch (e) {

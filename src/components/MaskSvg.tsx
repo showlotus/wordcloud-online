@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 import Circle from '@/assets/icons/Circle.svg?react'
 import Collect from '@/assets/icons/Collect.svg?react'
@@ -11,7 +12,6 @@ import Triangle from '@/assets/icons/Triangle.svg?react'
 import WeChat from '@/assets/icons/WeChat.svg?react'
 import Whale from '@/assets/icons/Whale.svg?react'
 import type { RootState } from '@/store'
-import { useSelector } from 'react-redux'
 
 interface MaskSvgProps {
   name: string
@@ -33,7 +33,7 @@ export default function MaskSvg(props: MaskSvgProps) {
     Square,
     Triangle,
     WeChat,
-    Whale,
+    Whale
   }
   const Component = ops[props.name] || <></>
   return (

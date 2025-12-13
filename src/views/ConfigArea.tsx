@@ -1,12 +1,13 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { Button, Form, Select, Upload, message, Popover } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
-import MaskImage from '@/components/MaskImage'
+import { Button, Form, Popover, Select, Upload, message } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { jsonDemo } from '@/assets/data/jsonDemo'
+import { txtDemo } from '@/assets/data/txtDemo'
 import ColorBlock from '@/components/ColorBlock'
+import MaskImage from '@/components/MaskImage'
 import type { RootState } from '@/store'
 import { updateFilterKeys } from '@/store/filterKeysSlice'
-import { txtDemo } from '@/assets/data/txtDemo'
-import { jsonDemo } from '@/assets/data/jsonDemo'
 
 interface Props {
   updateSourceData: (data: string) => void
@@ -114,9 +115,16 @@ export default function ConfigArea(props: Props) {
             style={{ width: '100%' }}
             placeholder="请输入要过滤的词"
             value={filterKeys}
-            options={tokenKeys}
             onChange={(value) => dispatch(updateFilterKeys(value))}
-          />
+          >
+            {tokenKeys.map(
+              (v: { label: string; value: string; title: number }) => (
+                <Select.Option key={v.label} value={v.value} title={v.title}>
+                  <span>{v.label}</span>
+                </Select.Option>
+              )
+            )}
+          </Select>
         </Form.Item>
       </Form>
     </div>

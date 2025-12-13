@@ -1,7 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux'
+
 import { themeColors } from '@/lib/config'
 import type { RootState } from '@/store'
 import { updateThemeColor } from '@/store/themeColorSlice'
+
 import { Block } from './Block'
 
 export default function ColorBlock() {

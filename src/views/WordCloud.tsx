@@ -1,13 +1,14 @@
+import { CopyOutlined, DownloadOutlined, SyncOutlined } from '@ant-design/icons'
+import { Button, message } from 'antd'
 import * as echarts from 'echarts'
 import 'echarts-wordcloud'
 import { useEffect, useMemo, useRef } from 'react'
 import { useSelector } from 'react-redux'
-import { Button, message } from 'antd'
-import { CopyOutlined, DownloadOutlined, SyncOutlined } from '@ant-design/icons'
-import type { RootState } from '@/store'
-import maskImgs from '@/lib/mask'
+
 import genColor from '@/lib/genColor'
-import { exportImage, copyImage } from '@/lib/image'
+import { copyImage, exportImage } from '@/lib/image'
+import maskImgs from '@/lib/mask'
+import type { RootState } from '@/store'
 
 function WordCloud() {
   const themeColor = useSelector((state: RootState) => state.themeColor.value)
@@ -41,18 +42,18 @@ function WordCloud() {
         keepAspect: true,
         textStyle: {
           fontWeight: 'bold',
-          color: () => genColor(themeColor),
+          color: () => genColor(themeColor)
         },
         emphasis: {
           textStyle: {
             color: themeColor,
             shadowBlur: 10,
-            shadowColor: '#333',
-          },
+            shadowColor: '#333'
+          }
         },
-        data: data,
-      },
-    ],
+        data: data
+      }
+    ]
   }
 
   const handleRefresh = () => {
@@ -109,7 +110,7 @@ function WordCloud() {
           bottom: '0',
           display: 'flex',
           flexDirection: 'column',
-          gap: '10px',
+          gap: '10px'
         }}
       >
         <Button

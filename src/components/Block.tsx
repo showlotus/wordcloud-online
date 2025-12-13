@@ -1,4 +1,5 @@
 import { theme } from 'antd'
+
 import { cn } from '@/lib/utils'
 
 export interface BlockProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -24,7 +25,7 @@ export const Block = ({
       )}
       style={{
         borderRadius: token.borderRadius,
-        boxShadow: isActive ? '0 0 0 2px rgba(0, 0, 0, 0.1)' : 'initial',
+        boxShadow: isActive ? '0 0 0 2px rgba(0, 0, 0, 0.1)' : 'initial'
       }}
       onClick={onClick}
       {...props}

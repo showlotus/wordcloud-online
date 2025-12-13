@@ -8,5 +8,5 @@ export const themeColors = [
   '#387ca0',
   '#4962e3',
   '#704cb6',
-  '#a146c2',
+  '#a146c2'
 ]
