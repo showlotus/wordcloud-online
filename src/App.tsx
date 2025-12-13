@@ -36,18 +36,18 @@ function App() {
 
   const handleUpdateSourceData = useCallback(async (data: string) => {
     setSpinning(true)
-    console.time('analyze words')
     try {
       const parsedData = JSON.parse(data) as TokenType[]
       dispatchData(parsedData)
     } catch (e) {
+      console.time('analyze words')
       const tokens = await analyze(data)
       console.timeEnd('analyze words')
       dispatchData(tokens)
     } finally {
       setSpinning(false)
     }
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleOpenGithub = () => {
     window.open(pkg.homepage as string)
@@ -56,7 +56,7 @@ function App() {
   useEffect(() => {
     const parsedData = JSON.parse(jsonDemo) as TokenType[]
     dispatchData(parsedData)
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <ConfigProvider
