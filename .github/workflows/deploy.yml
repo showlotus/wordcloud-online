@@ -2,8 +2,8 @@ name: Build and Push
 
 on:
   push:
-    branches:
-      - master # 你想触发这个工作流的分支，可以根据需要修改
+    tags:
+      - '*'
 
 jobs:
   build:
@@ -33,6 +33,12 @@ jobs:
 
       - name: Run build script
         run: pnpm run build
+
+      - name: Create Release
+        run: npx changelogithub
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Commit build results
         run: |
