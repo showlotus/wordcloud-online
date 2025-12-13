@@ -40,9 +40,10 @@ function App() {
       const parsedData = JSON.parse(data) as TokenType[]
       dispatchData(parsedData)
     } catch (e) {
-      console.time('analyze words')
+      const start = performance.now()
       const tokens = await analyze(data)
-      console.timeEnd('analyze words')
+      const end = performance.now()
+      console.log(`analyze words took: ${end - start}ms`)
       dispatchData(tokens)
     } finally {
       setSpinning(false)
