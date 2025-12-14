@@ -1,12 +1,18 @@
 name: Build and Push
 
+permissions:
+  contents: write
+
 on:
   push:
     tags:
       - '*'
 
+  workflow_dispatch:
+
 jobs:
   build:
+    concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
 
     steps:
@@ -40,17 +46,23 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Commit build results
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add .
-          git commit -m "Automated build commit by GitHub Actions" || echo "No changes to commit"
-          # git pull --rebase
+      # - name: Commit build results
+      #   run: |
+      #     git config --global user.name 'github-actions[bot]'
+      #     git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      #     git add .
+      #     git commit -m "Automated build commit by GitHub Actions" || echo "No changes to commit"
+      #     # git pull --rebase
 
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
+      # - name: Push changes
+      #   uses: ad-m/github-push-action@v0.6.0
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     branch: gh-pages # 替换为你想推送的目标分支
+      #     force: true
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages # 替换为你想推送的目标分支
-          force: true
+          clean: true
+          folder: docs
