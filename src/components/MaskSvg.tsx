@@ -1,5 +1,4 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 
 import Circle from '@/assets/icons/Circle.svg?react'
 import Collect from '@/assets/icons/Collect.svg?react'
@@ -11,7 +10,7 @@ import Square from '@/assets/icons/Square.svg?react'
 import Triangle from '@/assets/icons/Triangle.svg?react'
 import WeChat from '@/assets/icons/WeChat.svg?react'
 import Whale from '@/assets/icons/Whale.svg?react'
-import type { RootState } from '@/store'
+import { useWordCloudStore } from '@/store'
 
 interface MaskSvgProps {
   name: string
@@ -22,7 +21,7 @@ interface Ops {
 }
 
 export default function MaskSvg(props: MaskSvgProps) {
-  const themeColor = useSelector((state: RootState) => state.themeColor.value)
+  const { themeColor } = useWordCloudStore()
   const ops: Ops = {
     Circle,
     Collect,

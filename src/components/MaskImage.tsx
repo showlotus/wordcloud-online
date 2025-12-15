@@ -1,18 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux'
-
 import maskImgs from '@/lib/mask'
-import type { RootState } from '@/store'
-import { updateMaskImage } from '@/store/maskImageSlice'
+import { useWordCloudStore } from '@/store'
 
 import { Block } from './Block'
 import MaskSvg from './MaskSvg'
 
 export default function MaskImage() {
-  const maskImage = useSelector((state: RootState) => state.maskImage.value)
-  const dispatch = useDispatch()
+  const { maskImage, updateMaskImage } = useWordCloudStore()
 
   const handleSelectMaskImage = (imgName: string) => {
-    dispatch(updateMaskImage(imgName))
+    updateMaskImage(imgName)
   }
 
   return (

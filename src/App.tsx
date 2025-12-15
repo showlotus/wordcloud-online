@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 
 import { GithubOutlined, LoadingOutlined } from '@ant-design/icons'
 import { ConfigProvider, Divider, Spin } from 'antd'
@@ -10,16 +9,15 @@ import WordCloud from '@/views/WordCloud'
 import { jsonDemo } from './assets/data/jsonDemo'
 import { useWordCount } from './hooks/useWordCount'
 import type { TokenType } from './lib/parseToken'
-import { updateFilterKeys } from './store/filterKeysSlice'
-import { updateSourceToken } from './store/sourceTokenSlice'
-import { updateTokenKeys } from './store/tokenKeysSlice'
+import { useWordCloudStore } from './store'
 
 import pkg from '../package.json'
 
 import './App.less'
 
 function App() {
-  const dispatch = useDispatch()
+  const { updateSourceToken, updateTokenKeys, updateFilterKeys } =
+    useWordCloudStore()
   const [spinning, setSpinning] = useState(false)
   const analyze = useWordCount()
 
@@ -29,9 +27,9 @@ function App() {
       value: v.name,
       title: v.value
     }))
-    dispatch(updateSourceToken(tokens))
-    dispatch(updateTokenKeys(tokenKeys))
-    dispatch(updateFilterKeys([]))
+    updateSourceToken(tokens)
+    updateTokenKeys(tokenKeys)
+    updateFilterKeys([])
   }
 
   const handleUpdateSourceData = useCallback(async (data: string) => {

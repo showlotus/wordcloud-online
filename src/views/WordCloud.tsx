@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { useSelector } from 'react-redux'
 
 import { CopyOutlined, DownloadOutlined, SyncOutlined } from '@ant-design/icons'
 import { Button, message } from 'antd'
@@ -9,13 +8,10 @@ import 'echarts-wordcloud'
 import genColor from '@/lib/genColor'
 import { copyImage, exportImage } from '@/lib/image'
 import maskImgs from '@/lib/mask'
-import type { RootState } from '@/store'
+import { useWordCloudStore } from '@/store'
 
 function WordCloud() {
-  const themeColor = useSelector((state: RootState) => state.themeColor.value)
-  const maskImage = useSelector((state: RootState) => state.maskImage.value)
-  const sourceToken = useSelector((state: RootState) => state.sourceToken.value)
-  const filterKeys = useSelector((state: RootState) => state.filterKeys.value)
+  const { themeColor, maskImage, sourceToken, filterKeys } = useWordCloudStore()
 
   const data = useMemo(() => {
     console.log('update echarts data')

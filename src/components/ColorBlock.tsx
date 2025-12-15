@@ -1,17 +1,13 @@
-import { useDispatch, useSelector } from 'react-redux'
-
 import { themeColors } from '@/lib/config'
-import type { RootState } from '@/store'
-import { updateThemeColor } from '@/store/themeColorSlice'
+import { useWordCloudStore } from '@/store'
 
 import { Block } from './Block'
 
 export default function ColorBlock() {
-  const themeColor = useSelector((state: RootState) => state.themeColor.value)
-  const dispatch = useDispatch()
+  const { themeColor, updateThemeColor } = useWordCloudStore()
 
   const handleSelectColor = (color: string) => {
-    dispatch(updateThemeColor(color))
+    updateThemeColor(color)
   }
 
   return (

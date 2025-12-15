@@ -1,5 +1,3 @@
-import { useDispatch, useSelector } from 'react-redux'
-
 import { UploadOutlined } from '@ant-design/icons'
 import { Button, Form, Popover, Select, Upload, message } from 'antd'
 
@@ -7,8 +5,7 @@ import { jsonDemo } from '@/assets/data/jsonDemo'
 import { txtDemo } from '@/assets/data/txtDemo'
 import ColorBlock from '@/components/ColorBlock'
 import MaskImage from '@/components/MaskImage'
-import type { RootState } from '@/store'
-import { updateFilterKeys } from '@/store/filterKeysSlice'
+import { useWordCloudStore } from '@/store'
 
 interface Props {
   updateSourceData: (data: string) => void
@@ -16,9 +13,7 @@ interface Props {
 
 export default function ConfigArea(props: Props) {
   const { updateSourceData } = props
-  const filterKeys = useSelector((state: RootState) => state.filterKeys.value)
-  const tokenKeys = useSelector((state: RootState) => state.tokenKeys.value)
-  const dispatch = useDispatch()
+  const { filterKeys, tokenKeys, updateFilterKeys } = useWordCloudStore()
 
   const handleBeforeUpload = (file: File) => {
     const fileType = file.type
@@ -116,7 +111,7 @@ export default function ConfigArea(props: Props) {
             style={{ width: '100%' }}
             placeholder="请输入要过滤的词"
             value={filterKeys}
-            onChange={(value) => dispatch(updateFilterKeys(value))}
+            onChange={(value) => updateFilterKeys(value)}
           >
             {tokenKeys.map(
               (v: { label: string; value: string; title: number }) => (

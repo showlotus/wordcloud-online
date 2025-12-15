@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
           fetch-depth: 0
@@ -26,12 +26,12 @@ jobs:
         uses: pnpm/action-setup@v2
 
       - name: Set node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           # 根据需要设置 Node.js 版本
           # node-version: lts/*
           node-version: '18.x'
-          # cache: pnpm
+          cache: pnpm
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
@@ -45,21 +45,6 @@ jobs:
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-      # - name: Commit build results
-      #   run: |
-      #     git config --global user.name 'github-actions[bot]'
-      #     git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-      #     git add .
-      #     git commit -m "Automated build commit by GitHub Actions" || echo "No changes to commit"
-      #     # git pull --rebase
-
-      # - name: Push changes
-      #   uses: ad-m/github-push-action@v0.6.0
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     branch: gh-pages # 替换为你想推送的目标分支
-      #     force: true
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
