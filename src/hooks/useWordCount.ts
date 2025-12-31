@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react'
 
+import type { TokenKey } from '@/store'
+
 import WordCountWorker from '../workers/word-count.worker.ts?worker'
 
 interface WordInfo {
@@ -7,7 +9,7 @@ interface WordInfo {
   tag: string
 }
 
-function filterToken(data: WordInfo[]): { name: string; value: number }[] {
+function filterToken(data: WordInfo[]): TokenKey[] {
   // 不需要的词性：代词、量词、介词、连词、助词、语气词、拟声词、数词
   const unUselessTags = ['r', 'q', 'p', 'c', 'u', 'y', 'o', 'm', 'ul', 'uj']
   const filteredData = data
@@ -56,22 +58,19 @@ export function useWordCount() {
     return () => workerRef.current?.terminate()
   }, [])
 
-  const analyze = useCallback(
-    (text: string): Promise<{ name: string; value: number }[]> => {
-      return new Promise((resolve) => {
-        const handleMessage = (e: MessageEvent) => {
-          const data = e.data as WordInfo[]
-          const res = filterToken(data)
-          resolve(res)
-          workerRef.current?.removeEventListener('message', handleMessage)
-        }
-        workerRef.current?.addEventListener('message', handleMessage)
+  const analyze = useCallback((text: string): Promise<TokenKey[]> => {
+    return new Promise((resolve) => {
+      const handleMessage = (e: MessageEvent) => {
+        const data = e.data as WordInfo[]
+        const res = filterToken(data)
+        resolve(res)
+        workerRef.current?.removeEventListener('message', handleMessage)
+      }
+      workerRef.current?.addEventListener('message', handleMessage)
 
-        workerRef.current?.postMessage({ text })
-      })
-    },
-    []
-  )
+      workerRef.current?.postMessage({ text })
+    })
+  }, [])
 
   return analyze
 }

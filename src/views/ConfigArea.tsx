@@ -5,6 +5,7 @@ import { jsonDemo } from '@/assets/data/jsonDemo'
 import { txtDemo } from '@/assets/data/txtDemo'
 import ColorBlock from '@/components/ColorBlock'
 import MaskImage from '@/components/MaskImage'
+import type { TokenKey } from '@/store'
 import { useWordCloudStore } from '@/store'
 
 interface Props {
@@ -62,7 +63,7 @@ export default function ConfigArea(props: Props) {
             <Button
               className="custom-btn"
               icon={<UploadOutlined />}
-              style={{ marginTop: '10px', marginRight: '10px' }}
+              style={{ marginRight: '10px' }}
             >
               上传 <i> txt </i> 或 <i> json </i>
             </Button>
@@ -113,13 +114,13 @@ export default function ConfigArea(props: Props) {
             value={filterKeys}
             onChange={(value) => updateFilterKeys(value)}
           >
-            {tokenKeys.map(
-              (v: { label: string; value: string; title: number }) => (
-                <Select.Option key={v.label} value={v.value} title={v.title}>
-                  <span>{v.label}</span>
-                </Select.Option>
-              )
-            )}
+            {tokenKeys.map((v: TokenKey) => (
+              <Select.Option key={v.name} value={v.name}>
+                <span>
+                  {v.name} ({v.value})
+                </span>
+              </Select.Option>
+            ))}
           </Select>
         </Form.Item>
       </Form>

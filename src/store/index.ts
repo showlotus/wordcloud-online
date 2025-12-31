@@ -2,25 +2,24 @@ import { create } from 'zustand'
 
 import { themeColors } from '@/lib/config'
 import maskImgs from '@/lib/mask'
-import type { TokenType } from '@/lib/parseToken'
 
 // 定义状态类型
 interface WordCloudState {
   themeColor: string
   maskImage: string
   filterKeys: string[]
-  tokenKeys: Array<{ label: string; value: string; title: number }>
-  sourceToken: TokenType[]
+  tokenKeys: TokenKey[]
+  sourceToken: TokenKey[]
 
   // 定义更新方法
   updateThemeColor: (color: string) => void
   updateMaskImage: (image: string) => void
   updateFilterKeys: (keys: string[]) => void
-  updateTokenKeys: (
-    keys: Array<{ label: string; value: string; title: number }>
-  ) => void
-  updateSourceToken: (tokens: TokenType[]) => void
+  updateTokenKeys: (keys: TokenKey[]) => void
+  updateSourceToken: (tokens: TokenKey[]) => void
 }
+
+export type TokenKey = { name: string; value: number }
 
 // 创建 zustand store
 export const useWordCloudStore = create<WordCloudState>((set) => ({

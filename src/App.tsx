@@ -8,8 +8,7 @@ import WordCloud from '@/views/WordCloud'
 
 import { jsonDemo } from './assets/data/jsonDemo'
 import { useWordCount } from './hooks/useWordCount'
-import type { TokenType } from './lib/parseToken'
-import { useWordCloudStore } from './store'
+import { type TokenKey, useWordCloudStore } from './store'
 
 import pkg from '../package.json'
 
@@ -21,12 +20,8 @@ function App() {
   const [spinning, setSpinning] = useState(false)
   const analyze = useWordCount()
 
-  const dispatchData = (tokens: TokenType[]) => {
-    const tokenKeys = tokens.map((v) => ({
-      label: v.name,
-      value: v.name,
-      title: v.value
-    }))
+  const dispatchData = (tokens: TokenKey[]) => {
+    const tokenKeys = tokens.sort((a, b) => b.value - a.value)
     updateSourceToken(tokens)
     updateTokenKeys(tokenKeys)
     updateFilterKeys([])
@@ -35,7 +30,7 @@ function App() {
   const handleUpdateSourceData = useCallback(async (data: string) => {
     setSpinning(true)
     try {
-      const parsedData = JSON.parse(data) as TokenType[]
+      const parsedData = JSON.parse(data) as TokenKey[]
       dispatchData(parsedData)
     } catch (e) {
       const start = performance.now()
@@ -53,7 +48,7 @@ function App() {
   }
 
   useEffect(() => {
-    const parsedData = JSON.parse(jsonDemo) as TokenType[]
+    const parsedData = JSON.parse(jsonDemo) as TokenKey[]
     dispatchData(parsedData)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
