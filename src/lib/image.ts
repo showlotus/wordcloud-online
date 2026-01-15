@@ -34,7 +34,7 @@ export async function copyImage(echarts: ECharts | null | undefined) {
   await copyCanvas(canvas)
 }
 
-async function copyCanvas(canvas: HTMLCanvasElement) {
+export async function copyCanvas(canvas: HTMLCanvasElement) {
   if (!navigator.clipboard || !window.ClipboardItem) {
     throw new Error('Clipboard API not supported')
   }

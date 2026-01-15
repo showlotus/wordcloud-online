@@ -5,12 +5,13 @@ import { Button, message } from 'antd'
 import * as echarts from 'echarts'
 import 'echarts-wordcloud'
 
-import genColor from '@/lib/genColor'
-import { copyImage, exportImage } from '@/lib/image'
+import genColor from '@/lib/genColor';
+import { copyImage, exportImage } from '@/lib/image';
 import maskImgs from '@/lib/mask'
+import { cn } from '@/lib/utils'
 import { useWordCloudStore } from '@/store'
 
-function WordCloud() {
+export function WordCloud({ className }: { className?: string }) {
   const { themeColor, maskImage, sourceToken, filterKeys } = useWordCloudStore()
 
   const data = useMemo(() => {
@@ -94,22 +95,12 @@ function WordCloud() {
     return () => {
       chart?.dispose()
     }
-  }, [themeColor, maskImage, sourceToken, filterKeys])
+  }, [themeColor, maskImage, sourceToken, filterKeys]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div style={{ position: 'relative' }}>
-      <div ref={canvasRef} style={{ width: '800px', height: '700px' }}></div>
-      <div
-        className="tools"
-        style={{
-          position: 'absolute',
-          right: '0',
-          bottom: '0',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px'
-        }}
-      >
+    <div className={cn('relative flex justify-center items-center', className)}>
+      <div ref={canvasRef} className="w-[600px] h-[600px]"></div>
+      <div className="tools absolute right-0 bottom-0 flex flex-col gap-[10px]">
         <Button
           className="custom-btn"
           onClick={handleRefresh}
@@ -135,5 +126,3 @@ function WordCloud() {
     </div>
   )
 }
-
-export default WordCloud

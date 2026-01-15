@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import { GithubOutlined, LoadingOutlined } from '@ant-design/icons'
-import { ConfigProvider, Divider, Spin } from 'antd'
+import { GithubOutlined, LoadingOutlined } from '@ant-design/icons';
+import { ConfigProvider, Divider, Segmented, Spin } from 'antd'
 
-import ConfigArea from '@/views/ConfigArea'
-import WordCloud from '@/views/WordCloud'
+import { ConfigArea } from '@/views/ConfigArea'
+import { RankList } from '@/views/RankList'
+import { WordCloud } from '@/views/WordCloud'
 
 import { jsonDemo } from './assets/data/jsonDemo'
 import { useWordCount } from './hooks/useWordCount'
@@ -18,6 +19,7 @@ function App() {
   const { updateSourceToken, updateTokenKeys, updateFilterKeys } =
     useWordCloudStore()
   const [spinning, setSpinning] = useState(false)
+  const [view, setView] = useState<'词云' | '词频'>('词云')
   const analyze = useWordCount()
 
   const dispatchData = (tokens: TokenKey[]) => {
@@ -69,7 +71,20 @@ function App() {
           size="large"
           tip="解析中"
         ></Spin>
-        <WordCloud />
+        <div className="flex-1 flex flex-col gap-4">
+          <Segmented
+            className="self-center"
+            options={['词云', '词频']}
+            value={view}
+            onChange={(value) => setView(value as '词云' | '词频')}
+          />
+          <div className={view === '词云' ? 'block' : 'hidden'}>
+            <WordCloud />
+          </div>
+          <div className={view === '词频' ? 'block' : 'hidden'}>
+            <RankList />
+          </div>
+        </div>
         <Divider
           type="vertical"
           style={{ height: 'auto', marginRight: '50px' }}

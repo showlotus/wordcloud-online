@@ -12,7 +12,7 @@ interface Props {
   updateSourceData: (data: string) => void
 }
 
-export default function ConfigArea(props: Props) {
+export function ConfigArea(props: Props) {
   const { updateSourceData } = props
   const { filterKeys, tokenKeys, updateFilterKeys } = useWordCloudStore()
 
